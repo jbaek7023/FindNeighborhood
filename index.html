@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Neighborhood App</title>
+	<style>
+      html,
+      body {
+        font-family: Arial, sans-serif;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        height: 100%;
+        position: relative;
+      }
+
+      input {
+        font-size: 12px;
+      }
+
+      h1 {
+        color: #525454;
+        font-size: 22px;
+        margin: 0 0 10px 0;
+        text-align: center;
+      }
+
+      #hide-listings,
+      #show-listings {
+        width: 48%;
+      }
+
+      #map {
+        bottom:0px;
+        height: 100%;
+        left: 362px;
+        position: absolute;
+        right: 0px;
+      }
+
+      .options-box {
+        background: #fff;
+        border: 1px solid #999;
+        border-radius: 3px;
+        height: 100%;
+        line-height: 35px;
+        padding: 10px 10px 30px 10px;
+        text-align: left;
+        width: 340px;
+      }
+    </style>
+</head>
+<body>
+	<div class="container">
+      <div class="options-box">
+        <h1>Find Your New NYC Home</h1>
+        <div>
+          <input id="show-listings" type="button" value="Show Listings">
+          <input id="hide-listings" type="button" value="Hide Listings">
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <!--script tags starts from here-->
+	<script>
+		var map;
+
+		var markers = [];
+
+		function initMap() {
+			// Create a styles array to use with the map. set this styles when you initialized
+	        var styles = [
+	          {
+	            featureType: 'water',
+	            stylers: [
+	              { color: '#19a0d8' }
+	            ]
+	          },{
+	            featureType: 'administrative',
+	            elementType: 'labels.text.stroke',
+	            stylers: [
+	              { color: '#ffffff' },
+	              { weight: 6 }
+	            ]
+	          },{
+	            featureType: 'administrative',
+	            elementType: 'labels.text.fill',
+	            stylers: [
+	              { color: '#e85113' }
+	            ]
+	          },{
+	            featureType: 'road.highway',
+	            elementType: 'geometry.stroke',
+	            stylers: [
+	              { color: '#efe9e4' },
+	              { lightness: -40 }
+	            ]
+	          },{
+	            featureType: 'transit.station',
+	            stylers: [
+	              { weight: 9 },
+	              { hue: '#e85113' }
+	            ]
+	          },{
+	            featureType: 'road.highway',
+	            elementType: 'labels.icon',
+	            stylers: [
+	              { visibility: 'off' }
+	            ]
+	          },{
+	            featureType: 'water',
+	            elementType: 'labels.text.stroke',
+	            stylers: [
+	              { lightness: 100 }
+	            ]
+	          },{
+	            featureType: 'water',
+	            elementType: 'labels.text.fill',
+	            stylers: [
+	              { lightness: -100 }
+	            ]
+	          },{
+	            featureType: 'poi',
+	            elementType: 'geometry',
+	            stylers: [
+	              { visibility: 'on' },
+	              { color: '#f0e4d3' }
+	            ]
+	          },{
+	            featureType: 'road.highway',
+	            elementType: 'geometry.fill',
+	            stylers: [
+	              { color: '#efe9e4' },
+	              { lightness: -25 }
+	            ]
+	          }
+	        ];
+
+			var locations = [
+			{title: 'My Home', location: {lat: 37.47217, lng: 126.8686}},
+			{title: 'Filex Gym', location: {lat: 37.47574, lng: 126.8684}},
+			{title: 'Cheolsan Subway Station', location: {lat: 37.47590, lng: 126.8681}},
+			{title: 'Sung-Gae Medical Center', location: {lat: 37.47351, lng: 126.8718}},
+			{title: 'Delicious Waffle and pencake truck', location: {lat: 37.47393, lng: 126.8713}},
+			{title: 'Ha-An Library', location: {lat: 37.46828, lng: 126.8744}},
+			{title: 'Cheolsan Library', location: {lat: 37.47715, lng: 126.8725}},
+			{title: 'Cheolsan Big-Bridge', location: {lat: 37.47482, lng: 126.8772}}
+			];
+
+			map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: locations[0].location.lat, lng: locations[0].location.lng},
+			zoom: 17,
+			styles: styles,
+			mapTypeControl: false /*mapTypeControl is to enable user to set road, satellite mode and so on*/
+			});
+
+			for (var i = 0; i < locations.length; i++) {
+				// Get the position from the location array.
+				var position = locations[i].location;
+				var title = locations[i].title;
+				// Create a marker per location, and put into markers array.
+				var marker = new google.maps.Marker({
+					position: position,
+					title: title,
+					animation: google.maps.Animation.DROP,
+					//icon: defaultIcon,
+					id: i
+				});
+				// Push the marker to our array of markers.
+				markers.push(marker);
+				// Create an onclick event to open the large infowindow at each marker.
+				marker.addListener('click', function() {
+					populateInfoWindow(this, largeInfowindow);
+				});
+			}
+			document.getElementById('show-listings').addEventListener('click', showListings);
+			document.getElementById('hide-listings').addEventListener('click', hideListings);
+		}
+
+		function populateInfoWindow(marker, infowindow) {
+			// Check to make sure the infowindow is not already opened on this marker.
+			if (infowindow.marker != marker) {
+				infowindow.marker = marker;
+				infowindow.setContent('<div>' + marker.title + '</div>');
+				infowindow.open(map, marker);
+				
+				// Make sure the marker property is cleared if the infowindow is closed.
+				infowindow.addListener('closeclick', function() {
+					infowindow.marker = null;
+				});
+			}
+		}
+
+		function showListings() {
+			var bounds = new google.maps.LatLngBounds();
+			// Extend the boundaries of the map for each marker and display the marker
+			for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(map);
+				bounds.extend(markers[i].position);
+			}
+			map.fitBounds(bounds);
+		}
+		
+		function hideListings() {
+			for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(null);
+			}
+		}
+	</script>
+
+
+
+	<script type='text/javascript' src='js/knockout-3.4.1.js'></script>
+	<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXalgO8mp4nPjVTTLAB8FUgvUke3AkbVw&v=3&callback=initMap">
+    </script>
+</body>
+</html>
