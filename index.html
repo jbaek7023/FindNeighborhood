@@ -50,18 +50,35 @@
         text-align: left;
         width: 340px;
       }
+
+      section {
+      	bottom:0px;
+        height: 100%;
+        left: 362px;
+        position: absolute;
+        right: 0px;
+      }
+
+      nav {
+      	background: #fff,
+      	
+      }
     </style>
 </head>
 <body>
 	<div class="container">
       <div class="options-box">
         <h1>Find Your New NYC Home</h1>
-        <div>
+        <div> 
           <input id="show-listings" type="button" value="Show Listings">
           <input id="hide-listings" type="button" value="Hide Listings">
         </div>
       </div>
-      <div id="map"></div>
+      <section>
+      	<nav> aaa</nav>
+      	<div id="map"></div>	
+      </section>
+      
     </div>
 
     <!--script tags starts from here-->
@@ -140,14 +157,14 @@
 	        ];
 
 			var locations = [
-			{title: 'My Home', location: {lat: 37.47217, lng: 126.8686}},
-			{title: 'Filex Gym', location: {lat: 37.47574, lng: 126.8684}},
-			{title: 'Cheolsan Subway Station', location: {lat: 37.47590, lng: 126.8681}},
-			{title: 'Sung-Gae Medical Center', location: {lat: 37.47351, lng: 126.8718}},
-			{title: 'Delicious Waffle and pencake truck', location: {lat: 37.47393, lng: 126.8713}},
-			{title: 'Ha-An Library', location: {lat: 37.46828, lng: 126.8744}},
-			{title: 'Cheolsan Library', location: {lat: 37.47715, lng: 126.8725}},
-			{title: 'Cheolsan Big-Bridge', location: {lat: 37.47482, lng: 126.8772}}
+				{title: 'My Home', location: {lat: 37.47217, lng: 126.8686}},
+				{title: 'Filex Gym', location: {lat: 37.47574, lng: 126.8684}},
+				{title: 'Cheolsan Subway Station', location: {lat: 37.47590, lng: 126.8681}},
+				{title: 'Sung-Gae Medical Center', location: {lat: 37.47351, lng: 126.8718}},
+				{title: 'Delicious Waffle and pencake truck', location: {lat: 37.47393, lng: 126.8713}},
+				{title: 'Ha-An Library', location: {lat: 37.46828, lng: 126.8744}},
+				{title: 'Cheolsan Library', location: {lat: 37.47715, lng: 126.8725}},
+				{title: 'Cheolsan Big-Bridge', location: {lat: 37.47482, lng: 126.8772}}
 			];
 
 			map = new google.maps.Map(document.getElementById('map'), {
@@ -213,9 +230,10 @@
 
 
 
-	<script type='text/javascript' src='js/knockout-3.4.1.js'></script>
+	<script src="js/knockout-3.4.1.js"></script>
 	<script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXalgO8mp4nPjVTTLAB8FUgvUke3AkbVw&v=3&callback=initMap">
     </script>
+    <script src="js/app.js"></script>
 </body>
 </html>
