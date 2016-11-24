@@ -16,7 +16,7 @@
 
         <!--Filtered and Sorted elements-->
         <div data-bind="foreach: locationList.sort()"> 
-        	<div data-bind="text: title"></div>
+        	<div data-bind="text: title, click : $parent.openInfoWindow"></div>
         </div>
       </div>
       <div id=map></div>
@@ -27,5 +27,7 @@
  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXalgO8mp4nPjVTTLAB8FUgvUke3AkbVw&v=3&callback=initMap"></script> 
     <script src="js/map.js"></script>
     <script src="js/app.js"></script>
+    
+    
 </body>
 </html>

@@ -1,7 +1,3 @@
-//handle list, filter, and any other information on the page that is subjecto change 
-
-//Do not implement Creating Markers, tracking click events on markers, refreshing the map
-/*This is all of location dats*/
 var locations = [{
     title: 'My Home',
     location: {
@@ -74,19 +70,28 @@ var ViewModel = function(){
 		return left.title == right.title ? 0 : (left.title<right.title ? -1 : 1)
 	});
 
-
-    /*make user's input observable*/
+    /*Open info window when titles are selected*/
+    self.openInfoWindow = function(text) {
+        //find a marker matching title from markers array
+        markers.forEach(function(marker){
+            /*If marker's title and selected title are equal*/
+            if((marker.title)===(text.title)){
+                //populate the marker with largeInfoWindow
+                populateInfoWindow(marker, largeInfowindow);
+            } 
+        });
+    }
+//ViewModel.locationList()
+    /*Define user's input as observable*/
     self.userInput = ko.observable('');
-
     /*Filter elements if form is submitted*/
     self.filterLocations = function(userInput) {
-        //remove every elements 
+        //remove all elements 
         self.locationList.removeAll();
 
         locations.forEach(function(loc){  
-            /*If loc.title has substring of user's input,*/
-            if(loc.title.indexOf(self.userInput())>=0) {
-                /*push to location list*/
+            /*If loc.title has substring of user's input, push to location list. compare two values without case-sensitivity*/
+            if(loc.title.toLowerCase().indexOf(self.userInput().toLowerCase())>=0) {
                 self.locationList.push(loc);
             }
         });
