@@ -1,14 +1,14 @@
 var locations = [{
     title: 'My Home',
     location: {
-        lat: 37.47217,
+        lat: 37.47357,
         lng: 126.8686
     }
 }, {
     title: 'Filex Gym',
     location: {
         lat: 37.47574,
-        lng: 126.8684
+        lng: 126.8694
     }
 }, {
     title: 'Cheolsan Subway Station',
@@ -43,8 +43,8 @@ var locations = [{
 }, {
     title: 'Cheolsan Big-Bridge',
     location: {
-        lat: 37.47482,
-        lng: 126.8772
+        lat: 37.47442,
+        lng: 126.8757
     }
 }];
 
@@ -54,6 +54,7 @@ var Location = function(data) {
 	this.location = data.location;
 }
 
+var willBeDisabledLoc = [];
 /*This is ViewModel*/
 var ViewModel = function(){
 	var self = this;
@@ -81,7 +82,7 @@ var ViewModel = function(){
             } 
         });
     }
-//ViewModel.locationList()
+
     /*Define user's input as observable*/
     self.userInput = ko.observable('');
     /*Filter elements if form is submitted*/
@@ -93,8 +94,25 @@ var ViewModel = function(){
             /*If loc.title has substring of user's input, push to location list. compare two values without case-sensitivity*/
             if(loc.title.toLowerCase().indexOf(self.userInput().toLowerCase())>=0) {
                 self.locationList.push(loc);
-            }
+            } 
         });
+
+        /*Delete Every Markers*/
+        markers.forEach(function(marker){
+            marker.setMap(null);
+        });
+
+        /*Place markers*/
+        self.locationList().forEach(function(loc) {
+            markers.forEach(function(marker) {
+                if(marker.title===loc.title) {
+                    marker.setMap(map);
+                    bounds.extend(marker.position);
+                } 
+                map.fitBounds(bounds);
+            });  
+        });
+
         /*sort after filtering*/
         self.locationList.sort(function(left, right) {
             return left.title == right.title ? 0 : (left.title<right.title ? -1 : 1)

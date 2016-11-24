@@ -5,13 +5,13 @@
 </head>
 <body>
 	<div class="container">
-      <div data-bind="" class="options-box">
+      <div class="options-box">
         <h1>Bart Locations</h1>
 
         <!--Input Starts from here-->
         <form data-bind="submit: filterLocations">
         	<input data-bind="value: userInput" type="text">
-        	<input type="submit" value="Filter">
+        	<input type="submit" value="Filter" id="filterButton">
         </form>
 
         <!--Filtered and Sorted elements-->
@@ -19,14 +19,19 @@
         	<div data-bind="text: title, click : $parent.openInfoWindow"></div>
         </div>
       </div>
+      <!-- <div> -->
+        <div id=nav></div>
       <div id=map></div>
-    </div>
+        
+      <!-- </div> -->
+      </div>
 
 	<script src="js/knockout-3.4.1.js"></script>
 
  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXalgO8mp4nPjVTTLAB8FUgvUke3AkbVw&v=3&callback=initMap"></script> 
-    <script src="js/map.js"></script>
+     <script src="js/map.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
     
     
 </body>
