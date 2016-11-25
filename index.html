@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
 	<div class="container">
       <div class="options-box">
-        <h1>Bart Locations</h1>
+        <h1><a href="index.html">Bart Locations</a></h1>
 
         <!--Input Starts from here-->
-        <form data-bind="submit: filterLocations">
-        	<input data-bind="value: userInput" type="text">
-        	<input type="submit" value="Filter" id="fdilterButton">
+        <form class="formStyle" data-bind="submit: filterLocations">
+        	<input data-bind="value: userInput" type="text" value="Enter location!" class="user_input">
+        	<input type="submit" value="Filter" id="filterButton">
         </form>
+        <hr>
 
         <!--Filtered and Sorted elements-->
-        <div data-bind="foreach: locationList.sort()"> 
-        	<div data-bind="text: title, click : $parent.openInfoWindow"></div>
+        <div data-bind="foreach: locationList.sort()" class="elements"> 
+        	<div data-bind="text: title, click : $parent.openInfoWindow" class="element"></div>
         </div>
       </div>
       <!-- <div> -->
-        <div id=nav></div>
+        <div id=nav><img id='menu-icon' src="img/hamburgerSVG.svg"></div>
       <div id=map></div>
         
       <!-- </div> -->
@@ -30,9 +32,10 @@
 	<script src="js/knockout-3.4.1.js"></script>
 
  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXalgO8mp4nPjVTTLAB8FUgvUke3AkbVw&v=3&callback=initMap"></script> 
+
+    <script src="js/jquery-3.1.1.min.js"></script>
      <script src="js/map.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/jquery-3.1.1.min.js"></script>
     
     
 </body>

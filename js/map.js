@@ -3,6 +3,20 @@ var markers = [];
 var largeInfowindow;
 var bounds;
 
+var menuIcon = $('#menu-icon');
+var optionsBox = $('.options-box');
+var navBar = $('#nav');
+
+var container = $('.container');
+menuIcon.on('click', function() {
+	if(container.hasClass('open')){
+		container.removeClass('open');
+	} else {
+		container.addClass('open');
+	}
+});
+
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
@@ -43,9 +57,17 @@ function initMap() {
         });
         bounds.extend(markers[i].position);
     }
+
+    //navigate the center point of the map when window resized.(Reactive)
+	google.maps.event.addDomListener(window, "resize", function() {
+		var center = map.getCenter();
+		google.maps.event.trigger(map, "resize");
+		map.setCenter(center); 
+	});
 }
 
 function populateInfoWindow(marker, infowindow) {
+	bounds.extend(marker.position);
     if (infowindow.marker != marker) {
         infowindow.setContent('');
         infowindow.marker = marker;
@@ -67,18 +89,13 @@ function populateInfoWindow(marker, infowindow) {
 	    	$.getJSON(url, function(jsonData) {
 	    		if(jsonData.results.length>0) {
 	    			streetAddress = jsonData.results[0].formatted_address;
-	    			console.log("2"+streetAddress);
-	    		}		
-	    		console.log("3"+streetAddress);
-
-
+	     		}		
+	
 	    		/*Adding Panorama*/
 	    		if (status == google.maps.StreetViewStatus.OK) {
-	            	
 	                var nearStreetViewLocation = data.location.latLng;
 	                var heading = google.maps.geometry.spherical.computeHeading(
 	                    nearStreetViewLocation, marker.position);
-	                console.log("1.5"+streetAddress);
 	                infowindow.setContent('<div class="streetView">' + marker.title + '</div><div class="streetView">'+streetAddress+'</div><div id="pano"></div>');
 	                /*panoramaOptions take nearStreetViewLocation and heading*/
 	                var panoramaOptions = {
@@ -102,4 +119,6 @@ function populateInfoWindow(marker, infowindow) {
         // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
     }
+
+    
 }
