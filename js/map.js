@@ -2,20 +2,18 @@ var map;
 var markers = [];
 var largeInfowindow;
 var bounds;
-
 var menuIcon = $('#menu-icon');
 var optionsBox = $('.options-box');
 var navBar = $('#nav');
 
 var container = $('.container');
 menuIcon.on('click', function() {
-	if(container.hasClass('open')){
-		container.removeClass('open');
-	} else {
-		container.addClass('open');
-	}
+    if (container.hasClass('open')) {
+        container.removeClass('open');
+    } else {
+        container.addClass('open');
+    }
 });
-
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -35,7 +33,7 @@ function initMap() {
         var position = locations[i].location;
         var title = locations[i].title;
         var lat = locations[i].location.lat;
-		var lng = locations[i].location.lng;
+        var lng = locations[i].location.lng;
 
 
         // Create a marker per location, and put into markers array.
@@ -59,15 +57,15 @@ function initMap() {
     }
 
     //navigate the center point of the map when window resized.(Reactive)
-	google.maps.event.addDomListener(window, "resize", function() {
-		var center = map.getCenter();
-		google.maps.event.trigger(map, "resize");
-		map.setCenter(center); 
-	});
+    google.maps.event.addDomListener(window, "resize", function() {
+        var center = map.getCenter();
+        google.maps.event.trigger(map, "resize");
+        map.setCenter(center);
+    });
 }
 
 function populateInfoWindow(marker, infowindow) {
-	bounds.extend(marker.position);
+    bounds.extend(marker.position);
     if (infowindow.marker != marker) {
         infowindow.setContent('');
         infowindow.marker = marker;
@@ -83,36 +81,36 @@ function populateInfoWindow(marker, infowindow) {
 
         /*we are trying to put panorama(street view) to the info inwindow!*/
         function getStreetView(data, status) {
-        	var streetAddress='';
-	    	var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+marker.lat+','+marker.lng+'&sensor=true';
-	    	//getting JSON data fomr url
-	    	$.getJSON(url, function(jsonData) {
-	    		if(jsonData.results.length>0) {
-	    			streetAddress = jsonData.results[0].formatted_address;
-	     		}		
-	
-	    		/*Adding Panorama*/
-	    		if (status == google.maps.StreetViewStatus.OK) {
-	                var nearStreetViewLocation = data.location.latLng;
-	                var heading = google.maps.geometry.spherical.computeHeading(
-	                    nearStreetViewLocation, marker.position);
-	                infowindow.setContent('<div class="streetView">' + marker.title + '</div><div class="streetView">'+streetAddress+'</div><div id="pano"></div>');
-	                /*panoramaOptions take nearStreetViewLocation and heading*/
-	                var panoramaOptions = {
-	                    position: nearStreetViewLocation,
-	                    pov: {
-	                        heading: heading,
-	                        pitch: 30
-	                    }
-	                };
-	                //define panorama by panorama Options
-	                var panorama = new google.maps.StreetViewPanorama(
-	                    document.getElementById('pano'), panoramaOptions);
+            var streetAddress = '';
+            var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + marker.lat + ',' + marker.lng + '&sensor=true';
+            //getting JSON data fomr url
+            $.getJSON(url, function(jsonData) {
+                if (jsonData.results.length > 0) {
+                    streetAddress = jsonData.results[0].formatted_address;
+                }
 
-	            } else {
-	                infowindow.setContent('<div class="streetView">' + marker.title + '</div>'+'<div class="streetView">'+'No Street View Found'+'</div>');
-	            }
-			})	
+                /*Adding Panorama*/
+                if (status == google.maps.StreetViewStatus.OK) {
+                    var nearStreetViewLocation = data.location.latLng;
+                    var heading = google.maps.geometry.spherical.computeHeading(
+                        nearStreetViewLocation, marker.position);
+                    infowindow.setContent('<div class="streetView">' + marker.title + '</div><div class="streetView">' + streetAddress + '</div><div id="pano"></div>');
+                    /*panoramaOptions take nearStreetViewLocation and heading*/
+                    var panoramaOptions = {
+                        position: nearStreetViewLocation,
+                        pov: {
+                            heading: heading,
+                            pitch: 30
+                        }
+                    };
+                    //define panorama by panorama Options
+                    var panorama = new google.maps.StreetViewPanorama(
+                        document.getElementById('pano'), panoramaOptions);
+
+                } else {
+                    infowindow.setContent('<div class="streetView">' + marker.title + '</div>' + '<div class="streetView">' + 'No Street View Found' + '</div>');
+                }
+            })
         }
         //getPenoramaByLocation
         streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
@@ -120,5 +118,4 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.open(map, marker);
     }
 
-    
 }

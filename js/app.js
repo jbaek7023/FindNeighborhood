@@ -50,36 +50,37 @@ var locations = [{
 
 /*This is Location constructor*/
 var Location = function(data) {
-	this.title = data.title;
-	this.location = data.location;
+    this.title = data.title;
+    this.location = data.location;
 }
 
 var willBeDisabledLoc = [];
+
 /*This is ViewModel*/
-var ViewModel = function(){
-	var self = this;
+var ViewModel = function() {
+    var self = this;
 
-	self.locationList = ko.observableArray([]);
+    self.locationList = ko.observableArray([]);
 
-    locations.forEach(function(location){
-		self.locationList.push(new Location(location));
-	});
+    locations.forEach(function(location) {
+        self.locationList.push(new Location(location));
+    });
 
 
-	/*Sort Locations in arphabetical order*/
+    /*Sort Locations in arphabetical order*/
     self.locationList.sort(function(left, right) {
-		return left.title == right.title ? 0 : (left.title<right.title ? -1 : 1)
-	});
+        return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1)
+    });
 
     /*Open info window when titles are selected*/
     self.openInfoWindow = function(text) {
         //find a marker matching title from markers array
-        markers.forEach(function(marker){
+        markers.forEach(function(marker) {
             /*If marker's title and selected title are equal*/
-            if((marker.title)===(text.title)){
+            if ((marker.title) === (text.title)) {
                 //populate the marker with largeInfoWindow
                 populateInfoWindow(marker, largeInfowindow);
-            } 
+            }
         });
     }
 
@@ -90,34 +91,34 @@ var ViewModel = function(){
         //remove all elements 
         self.locationList.removeAll();
 
-        locations.forEach(function(loc){  
+        locations.forEach(function(loc) {
             /*If loc.title has substring of user's input, push to location list. compare two values without case-sensitivity*/
-            if(loc.title.toLowerCase().indexOf(self.userInput().toLowerCase())>=0) {
+            if (loc.title.toLowerCase().indexOf(self.userInput().toLowerCase()) >= 0) {
                 self.locationList.push(loc);
-            } 
+            }
         });
 
         /*Delete Every Markers*/
-        markers.forEach(function(marker){
+        markers.forEach(function(marker) {
             marker.setMap(null);
         });
 
         /*Place markers*/
         self.locationList().forEach(function(loc) {
             markers.forEach(function(marker) {
-                if(marker.title===loc.title) {
+                if (marker.title === loc.title) {
                     marker.setMap(map);
                     bounds.extend(marker.position);
-                } 
+                }
                 map.fitBounds(bounds);
-            });  
+            });
         });
 
         /*sort after filtering*/
         self.locationList.sort(function(left, right) {
-            return left.title == right.title ? 0 : (left.title<right.title ? -1 : 1)
-         });
-	}
+            return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1)
+        });
+    }
 }
 
 ko.applyBindings(new ViewModel());
