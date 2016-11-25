@@ -7,15 +7,17 @@ var optionsBox = $('.options-box');
 var navBar = $('#nav');
 
 var container = $('.container');
-menuIcon.on('click', function() {
-    if (container.hasClass('open')) {
-        container.removeClass('open');
-    } else {
-        container.addClass('open');
-    }
-});
+
 
 function initMap() {
+    menuIcon.on('click', function() {
+        if (container.hasClass('open')) {
+            container.removeClass('open');
+        } else {
+            container.addClass('open');
+        }
+    });
+
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: locations[3].location.lat,
@@ -27,6 +29,10 @@ function initMap() {
 
     largeInfowindow = new google.maps.InfoWindow();
     bounds = new google.maps.LatLngBounds();
+    
+    var defaultIcon = makeMarkerIcon('E45641');
+    var highlightedIcon = makeMarkerIcon('F1A94E');
+
     /*Putting Markers*/
     for (var i = 0; i < locations.length; i++) {
         // Get the position from the location array.
@@ -44,7 +50,7 @@ function initMap() {
             lng: lng,
             title: title,
             animation: google.maps.Animation.DROP,
-            //icon: defaultIcon,
+            icon: defaultIcon,
             id: i
         });
         // Push the marker to our array of markers.
@@ -53,9 +59,16 @@ function initMap() {
         marker.addListener('click', function() {
             populateInfoWindow(this, largeInfowindow);
         });
+        
+        /*Setting Markers' Icon*/
+        marker.addListener('mouseover', function() {
+            this.setIcon(highlightedIcon);
+        });
+        marker.addListener('mouseout', function() {
+            this.setIcon(defaultIcon);
+        });    
         bounds.extend(markers[i].position);
     }
-
     //navigate the center point of the map when window resized.(Reactive)
     google.maps.event.addDomListener(window, "resize", function() {
         var center = map.getCenter();
@@ -88,13 +101,12 @@ function populateInfoWindow(marker, infowindow) {
                 if (jsonData.results.length > 0) {
                     streetAddress = jsonData.results[0].formatted_address;
                 }
-
                 /*Adding Panorama*/
                 if (status == google.maps.StreetViewStatus.OK) {
                     var nearStreetViewLocation = data.location.latLng;
                     var heading = google.maps.geometry.spherical.computeHeading(
                         nearStreetViewLocation, marker.position);
-                    infowindow.setContent('<div class="streetView">' + marker.title + '</div><div class="streetView">' + streetAddress + '</div><div id="pano"></div>');
+                    infowindow.setContent('<h3 class="streetView">' + marker.title + '</h3><div class="streetView">' + streetAddress + '</div><div id="pano"></div>');
                     /*panoramaOptions take nearStreetViewLocation and heading*/
                     var panoramaOptions = {
                         position: nearStreetViewLocation,
@@ -108,14 +120,27 @@ function populateInfoWindow(marker, infowindow) {
                         document.getElementById('pano'), panoramaOptions);
 
                 } else {
-                    infowindow.setContent('<div class="streetView">' + marker.title + '</div>' + '<div class="streetView">' + 'No Street View Found' + '</div>');
+                    //If status is not OK (ERR Handling)
+                    infowindow.setContent('<h3 class="streetView">' + marker.title + '</h3><div class="streetView">' + streetAddress + '</div><div class="streetView">' + 'No Street View Found' + '</div>');
                 }
-            })
+            }).fail(function(){
+                infowindow.setContent('<h3 class="streetView">Sorry, we couldn\'t find your address</h3>');
+            });
         }
         //getPenoramaByLocation
         streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
     }
+}
 
+function makeMarkerIcon(markerColor) {
+    var markerImage = new google.maps.MarkerImage(
+    'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+    '|40|_|%E2%80%A2',
+    new google.maps.Size(30, 40),
+    new google.maps.Point(0, 0),
+    new google.maps.Point(10, 34),
+    new google.maps.Size(30,44));
+    return markerImage;
 }
