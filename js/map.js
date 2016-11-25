@@ -3,27 +3,22 @@ var markers = [];
 var largeInfowindow;
 var bounds;
 var menuIcon = $('#menu-icon');
-var optionsBox = $('.options-box');
-var navBar = $('#nav');
-
+var optionsBox = $('aside');
+var navBar = $('nav');
 var container = $('.container');
 
-
 function initMap() {
+    //menu-icon animation
     menuIcon.on('click', function() {
-        if (container.hasClass('open')) {
-            container.removeClass('open');
-        } else {
-            container.addClass('open');
-        }
+        container.toggleClass("open");
     });
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: locations[3].location.lat,
-            lng: locations[3].location.lng
+            lat: locations[0].location.lat,
+            lng: locations[0].location.lng
         },
-        zoom: 16,
+        zoom: 15,
         mapTypeControl: false
     });
 
@@ -40,7 +35,7 @@ function initMap() {
         var title = locations[i].title;
         var lat = locations[i].location.lat;
         var lng = locations[i].location.lng;
-
+        var id = locations[i].id;
 
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
@@ -51,12 +46,13 @@ function initMap() {
             title: title,
             animation: google.maps.Animation.DROP,
             icon: defaultIcon,
-            id: i
+            yid: id
         });
         // Push the marker to our array of markers.
         markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
         marker.addListener('click', function() {
+            toggleBounce(this);
             populateInfoWindow(this, largeInfowindow);
         });
         
@@ -69,12 +65,14 @@ function initMap() {
         });    
         bounds.extend(markers[i].position);
     }
-    //navigate the center point of the map when window resized.(Reactive)
-    google.maps.event.addDomListener(window, "resize", function() {
-        var center = map.getCenter();
-        google.maps.event.trigger(map, "resize");
-        map.setCenter(center);
-    });
+}
+
+function toggleBounce(marker) {
+    if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
 }
 
 function populateInfoWindow(marker, infowindow) {
@@ -96,6 +94,18 @@ function populateInfoWindow(marker, infowindow) {
         function getStreetView(data, status) {
             var streetAddress = '';
             var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + marker.lat + ',' + marker.lng + '&sensor=true';
+
+            var yelpURL = 'https://api.yelp.com/v2/business/'+marker.yid;
+            var rating =0;
+
+            /*get jSON data from yelp url*/
+            $.getJSON(yelpURL, function(jsonData) {
+                if(jsonData.results.length>0){
+                    rating = jsonData.rating;
+                }
+                alert(rating);
+            });    
+
             //getting JSON data fomr url
             $.getJSON(url, function(jsonData) {
                 if (jsonData.results.length > 0) {
@@ -120,10 +130,11 @@ function populateInfoWindow(marker, infowindow) {
                         document.getElementById('pano'), panoramaOptions);
 
                 } else {
-                    //If status is not OK (ERR Handling)
+                    //If status is not OK (Error Handling)
                     infowindow.setContent('<h3 class="streetView">' + marker.title + '</h3><div class="streetView">' + streetAddress + '</div><div class="streetView">' + 'No Street View Found' + '</div>');
                 }
             }).fail(function(){
+                //handle error if coordinates couldn't find the address from JSON
                 infowindow.setContent('<h3 class="streetView">Sorry, we couldn\'t find your address</h3>');
             });
         }
@@ -131,6 +142,9 @@ function populateInfoWindow(marker, infowindow) {
         streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
+    }
+    window.onresize = function() {
+        map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
     }
 }
 
@@ -143,4 +157,8 @@ function makeMarkerIcon(markerColor) {
     new google.maps.Point(10, 34),
     new google.maps.Size(30,44));
     return markerImage;
+}
+
+function googleMapError() {
+    alert("Something went wrong with Google API");
 }

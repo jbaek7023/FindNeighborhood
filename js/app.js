@@ -1,51 +1,59 @@
 var locations = [{
-    title: 'My Home',
+    title: 'Starbucks @ Georgia Tech',
     location: {
-        lat: 37.47357,
-        lng: 126.8686
-    }
+        lat: 33.7738306,
+        lng: -84.3999051
+    },
+    id: 'starbucks-atlanta-25?osq=Starbucks'
 }, {
-    title: 'Filex Gym',
+    title: 'Antico Pizza Napoletana',
     location: {
-        lat: 37.47574,
-        lng: 126.8694
-    }
+        lat: 33.783621,
+        lng: -84.404552
+    },
+    id: 'antico-pizza-atlanta'
 }, {
-    title: 'Cheolsan Subway Station',
+    title: 'Vortex Bar & Grill',
     location: {
-        lat: 37.47590,
-        lng: 126.8681
-    }
+        lat: 33.776527,
+        lng: -84.388646
+    },
+    id: 'the-vortex-bar-and-grill-midtown-atlanta'
 }, {
-    title: 'Sung-Gae Medical Center',
+    title: 'Chick-fil-A',
     location: {
-        lat: 37.47351,
-        lng: 126.8718
-    }
+        lat: 33.7738306,
+        lng: -84.3999051
+    },
+    id: 'chick-fil-a-atlanta-64?osq=Chick-fil+a'
 }, {
-    title: 'Waffle & Pencake',
+    title: 'West Egg Cafe',
     location: {
-        lat: 37.47393,
-        lng: 126.8713
-    }
+        lat: 33.7729774,
+        lng: -84.405898
+    },
+    id: 'west-egg-café-atlanta-2'
 }, {
-    title: 'Ha-An Library',
+    title: 'Pizza Hut',
     location: {
-        lat: 37.46828,
-        lng: 126.8744
-    }
+        lat: 33.7815867,
+        lng: -84.4047339
+    }, 
+    id: 'pizza-hut-atlanta-88?osq=pizza+hut'
 }, {
-    title: 'Cheolsan Library',
+    title: 'Papa John\'s Pizza',
     location: {
-        lat: 37.47715,
-        lng: 126.8725
-    }
+        lat: 33.7804760,
+        lng: -84.4051981
+    },
+    id: 'papa-johns-pizza-atlanta-15'
 }, {
-    title: 'Cheolsan Big-Bridge',
+    title: 'Waffle House',
     location: {
-        lat: 37.47442,
-        lng: 126.8757
-    }
+        lat: 33.7755879,
+        lng: -84.389796
+    },
+    id: 'waffle-house-atlanta-82?osq=Waffle+house'
 }];
 
 /*This is Location constructor*/
@@ -100,17 +108,16 @@ var ViewModel = function() {
 
         /*Delete Every Markers*/
         markers.forEach(function(marker) {
-            marker.setMap(null);
+            marker.setVisible(false);
         });
 
         /*Place markers*/
         self.locationList().forEach(function(loc) {
             markers.forEach(function(marker) {
                 if (marker.title === loc.title) {
-                    marker.setMap(map);
+                    marker.setVisible(true);
                     bounds.extend(marker.position);
                 }
-                map.fitBounds(bounds);
             });
         });
 
@@ -122,3 +129,4 @@ var ViewModel = function() {
 };
 
 ko.applyBindings(new ViewModel());
+
