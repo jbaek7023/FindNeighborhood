@@ -103,7 +103,6 @@ function populateInfoWindow(marker, infowindow) {
                 if(jsonData.results.length>0){
                     rating = jsonData.rating;
                 }
-                alert(rating);
             });    
 
             //getting JSON data fomr url
@@ -116,7 +115,7 @@ function populateInfoWindow(marker, infowindow) {
                     var nearStreetViewLocation = data.location.latLng;
                     var heading = google.maps.geometry.spherical.computeHeading(
                         nearStreetViewLocation, marker.position);
-                    infowindow.setContent('<h3 class="streetView">' + marker.title + '</h3><div class="streetView">' + streetAddress + '</div><div id="pano"></div>');
+                    infowindow.setContent('<h3 class="streetView">' + marker.title + '</h3><div class="streetView">' + streetAddress +"Rating(Yelp) : "+rating+ '</div><div id="pano"></div>');
                     /*panoramaOptions take nearStreetViewLocation and heading*/
                     var panoramaOptions = {
                         position: nearStreetViewLocation,
