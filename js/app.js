@@ -52,7 +52,7 @@ var locations = [{
 var Location = function(data) {
     this.title = data.title;
     this.location = data.location;
-}
+};
 
 var willBeDisabledLoc = [];
 
@@ -69,7 +69,7 @@ var ViewModel = function() {
 
     /*Sort Locations in arphabetical order*/
     self.locationList.sort(function(left, right) {
-        return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1)
+        return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1);
     });
 
     /*Open info window when titles are selected*/
@@ -82,7 +82,7 @@ var ViewModel = function() {
                 populateInfoWindow(marker, largeInfowindow);
             }
         });
-    }
+    };
 
     /*Define user's input as observable*/
     self.userInput = ko.observable('');
@@ -116,9 +116,9 @@ var ViewModel = function() {
 
         /*sort after filtering*/
         self.locationList.sort(function(left, right) {
-            return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1)
+            return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1);
         });
-    }
-}
+    };
+};
 
 ko.applyBindings(new ViewModel());
