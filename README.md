@@ -7,7 +7,6 @@ find the location of my neighborhood.
 1. Download the whole file
 2. open index.html
 
-(1.)You can also access to 
 ###Development
 
 Used Google Maps API
