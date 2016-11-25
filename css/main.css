@@ -33,7 +33,6 @@ input {
     left: 20px;
     top: 6px;
     width: 60px;
-    margin-left: 10px;
 }
 #menu-icon:hover {
     background-color: #44B3C2;
@@ -72,11 +71,11 @@ input {
     top: 0;
 }
 .open {
-    transform: translate(-320px, 0);
-    -ms-transform: translate(-320px, 0);
+    transform: translate(-300px, 0);
+    -ms-transform: translate(-300px, 0);
     /* IE 9 */
     
-    -webkit-transform: translate(-320px, 0);
+    -webkit-transform: translate(-300px, 0);
     /* Safari */
 }
 #nav {
@@ -98,8 +97,6 @@ input {
 }
 .element {
     background-color: #F2EDD8;
-    /*background-color: #F1A94E;*/
-    
     margin-top: 5px;
     margin-bottom: 5px;
     padding-left: 10px;
