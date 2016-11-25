@@ -23,7 +23,7 @@ var locations = [{
         lng: 126.8718
     }
 }, {
-    title: 'Delicious Waffle and pencake truck',
+    title: 'Waffle & Pencake',
     location: {
         lat: 37.47393,
         lng: 126.8713

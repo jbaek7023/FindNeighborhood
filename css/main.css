@@ -65,22 +65,22 @@ input {
     background-color: #7B8D8E;
     line-height: 35px;
     padding: 0px;
-    width: 300px;
+    width: 250px;
     height: 100%;
     position: absolute;
     top: 0;
 }
 .open {
-    transform: translate(-300px, 0);
-    -ms-transform: translate(-300px, 0);
+    transform: translate(-250px, 0);
+    -ms-transform: translate(-250px, 0);
     /* IE 9 */
     
-    -webkit-transform: translate(-300px, 0);
+    -webkit-transform: translate(-250px, 0);
     /* Safari */
 }
 #nav {
     top: 0;
-    left: 300px;
+    left: 250px;
     width: 100%;
     position: relative;
     background-color: #5D4C46;
@@ -110,7 +110,7 @@ input {
     width: 100%;
     height: 90%;
     position: relative;
-    left: 300px;
+    left: 250px;
 }
 .streetView {
     color: black;
