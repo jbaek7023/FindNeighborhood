@@ -48,7 +48,7 @@ function initMap() {
         });
         // Create an onclick event to open the large infowindow at each marker.
         marker.addListener('click', function() {
-            if(activeMarkers.length==0){
+            if(activeMarkers.length===0){
                 this.setAnimation(google.maps.Animation.BOUNCE);
                 activeMarkers.push(this);
             } else if(activeMarkers[0].title==this.title){
