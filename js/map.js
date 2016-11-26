@@ -1,5 +1,6 @@
 var map;
 var markers = [];
+var activeMarkers = [];
 var largeInfowindow;
 var bounds;
 var menuIcon = $('#menu-icon');
@@ -10,14 +11,6 @@ var container = $('.container');
 
 
 function initMap() {
-    menuIcon.on('click', function() {
-        if (container.hasClass('open')) {
-            container.removeClass('open');
-        } else {
-            container.addClass('open');
-        }
-    });
-
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: locations[3].location.lat,
@@ -53,10 +46,19 @@ function initMap() {
             icon: defaultIcon,
             id: i
         });
-        // Push the marker to our array of markers.
-        markers.push(marker);
         // Create an onclick event to open the large infowindow at each marker.
         marker.addListener('click', function() {
+            if(activeMarkers.length==0){
+                this.setAnimation(google.maps.Animation.BOUNCE);
+                activeMarkers.push(this);
+            } else if(activeMarkers[0].title==this.title){
+
+            } else {
+                activeMarkers[0].setAnimation(null);
+                activeMarkers = [];
+                this.setAnimation(google.maps.Animation.BOUNCE);
+                activeMarkers.push(this);
+             }
             populateInfoWindow(this, largeInfowindow);
         });
         
@@ -67,6 +69,15 @@ function initMap() {
         marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
         });    
+
+        /*Adding bounce for markers*/
+        // marker.addListener('click', function() {
+            
+        //  });
+        
+        
+        // Push the marker to our array of markers.
+        markers.push(marker);
         bounds.extend(markers[i].position);
     }
     //navigate the center point of the map when window resized.(Reactive)
@@ -84,7 +95,11 @@ function populateInfoWindow(marker, infowindow) {
         infowindow.marker = marker;
 
         infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
+            // infowindow.marker = null;
+            if(activeMarkers.length>0){
+                activeMarkers[0].setAnimation(null);
+            }
+            activeMarkers = [];
         }); //end of previous example omitted infowindow.open(map, marker);
 
         //determine streetView Service 
@@ -96,7 +111,7 @@ function populateInfoWindow(marker, infowindow) {
         function getStreetView(data, status) {
             var streetAddress = '';
             var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + marker.lat + ',' + marker.lng + '&sensor=true';
-            
+
             //getting JSON data fomr url
             $.getJSON(url, function(jsonData) {
                 if (jsonData.results.length > 0) {
@@ -133,6 +148,11 @@ function populateInfoWindow(marker, infowindow) {
         // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
     }
+
+    //toggle menu icon
+    menuIcon.on('click', function() {
+        container.toggleClass('open');
+    });
 }
 
 function makeMarkerIcon(markerColor) {

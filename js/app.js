@@ -79,7 +79,8 @@ var ViewModel = function() {
             /*If marker's title and selected title are equal*/
             if ((marker.title) === (text.title)) {
                 //populate the marker with largeInfoWindow
-                populateInfoWindow(marker, largeInfowindow);
+                // populateInfoWindow(marker, largeInfowindow);
+                new google.maps.event.trigger(marker, 'click');
             }
         });
     };
@@ -100,14 +101,14 @@ var ViewModel = function() {
 
         /*Delete Every Markers*/
         markers.forEach(function(marker) {
-            marker.setMap(null);
+            marker.setVisible(false);
         });
 
         /*Place markers*/
         self.locationList().forEach(function(loc) {
             markers.forEach(function(marker) {
                 if (marker.title === loc.title) {
-                    marker.setMap(map);
+                    marker.setVisible(true);
                     bounds.extend(marker.position);
                 }
                 map.fitBounds(bounds);
