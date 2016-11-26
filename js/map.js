@@ -96,6 +96,7 @@ function populateInfoWindow(marker, infowindow) {
         function getStreetView(data, status) {
             var streetAddress = '';
             var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + marker.lat + ',' + marker.lng + '&sensor=true';
+            
             //getting JSON data fomr url
             $.getJSON(url, function(jsonData) {
                 if (jsonData.results.length > 0) {
