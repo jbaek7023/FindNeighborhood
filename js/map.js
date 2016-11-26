@@ -69,12 +69,6 @@ function initMap() {
         marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
         });    
-
-        /*Adding bounce for markers*/
-        // marker.addListener('click', function() {
-            
-        //  });
-        
         
         // Push the marker to our array of markers.
         markers.push(marker);

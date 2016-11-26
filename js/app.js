@@ -78,8 +78,7 @@ var ViewModel = function() {
         markers.forEach(function(marker) {
             /*If marker's title and selected title are equal*/
             if ((marker.title) === (text.title)) {
-                //populate the marker with largeInfoWindow
-                // populateInfoWindow(marker, largeInfowindow);
+                //click trigger!
                 new google.maps.event.trigger(marker, 'click');
             }
         });
