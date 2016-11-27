@@ -1,5 +1,4 @@
 var locations = [{
-
     title: 'Antico Pizza Napoletana',
     location: {
         lat: 33.783621,
@@ -32,7 +31,7 @@ var locations = [{
     location: {
         lat: 33.7815867,
         lng: -84.4047339
-    }, 
+    },
     id: 'pizza-hut-atlanta-88?osq=pizza+hut'
 }, {
     title: 'Papa John\'s Pizza',
@@ -68,7 +67,6 @@ var ViewModel = function() {
         self.locationList.push(new Location(location));
     });
 
-
     //Sort Locations in arphabetical order
     self.locationList.sort(function(left, right) {
         return left.title == right.title ? 0 : (left.title < right.title ? -1 : 1);
@@ -81,7 +79,7 @@ var ViewModel = function() {
             //If marker's title and selected title are equal
             if ((marker.title) === (text.title)) {
                 //click trigger!
-                new google.maps.event.trigger(marker, 'click');
+                google.maps.event.trigger(marker, 'click');
             }
         });
     };
@@ -123,4 +121,3 @@ var ViewModel = function() {
 };
 
 ko.applyBindings(new ViewModel());
-
