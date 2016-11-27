@@ -1,4 +1,5 @@
 var locations = [{
+
     title: 'Antico Pizza Napoletana',
     location: {
         lat: 33.783621,
@@ -111,7 +112,6 @@ var ViewModel = function() {
                     marker.setVisible(true);
                     bounds.extend(marker.position);
                 }
-                map.fitBounds(bounds);
             });
         });
 
@@ -123,3 +123,4 @@ var ViewModel = function() {
 };
 
 ko.applyBindings(new ViewModel());
+

@@ -9,9 +9,16 @@ var navBar = $('#nav');
 
 var client_id = 'JCUSOXOIXJDLKNNQWOKGSQZSBCVZEK1J1RMHGUEF1WQ0KW5U';
 var client_secret = 'WMQHRCD22RR0TFRWOY10CRHD4JCQRU3D4MZPQJ1WN4PRU3JS';
+var optionsBox = $('aside');
+var navBar = $('nav');
 var container = $('.container');
 
 function initMap() {
+    //menu-icon animation
+    menuIcon.on('click', function() {
+        container.toggleClass("open");
+    });
+
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: locations[6].location.lat,
@@ -34,7 +41,7 @@ function initMap() {
         var title = locations[i].title;
         var lat = locations[i].location.lat;
         var lng = locations[i].location.lng;
-
+        var id = locations[i].id;
 
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
@@ -45,7 +52,7 @@ function initMap() {
             title: title,
             animation: google.maps.Animation.DROP,
             icon: defaultIcon,
-            id: i
+            yid: id
         });
         // Create an onclick event to open the large infowindow at each marker.
         marker.addListener('click', function() {
@@ -60,6 +67,7 @@ function initMap() {
                 this.setAnimation(google.maps.Animation.BOUNCE);
                 activeMarkers.push(this);
              }
+//            toggleBounce(this);
             populateInfoWindow(this, largeInfowindow);
         });
         
@@ -75,12 +83,14 @@ function initMap() {
         markers.push(marker);
         bounds.extend(markers[i].position);
     }
-    //navigate the center point of the map when window resized.(Reactive)
-    google.maps.event.addDomListener(window, "resize", function() {
-        var center = map.getCenter();
-        google.maps.event.trigger(map, "resize");
-        map.setCenter(center);
-    });
+}
+
+function toggleBounce(marker) {
+    if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
 }
 
 function handleError() {
@@ -178,6 +188,10 @@ function populateInfoWindow(marker, infowindow) {
     menuIcon.on('click', function() {
         container.toggleClass('open');
     });
+
+    window.onresize = function() {
+        map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
+    }
 }
 
 function makeMarkerIcon(markerColor) {
