@@ -14,11 +14,7 @@ var navBar = $('nav');
 var container = $('.container');
 
 function initMap() {
-    //menu-icon animation
-    menuIcon.on('click', function() {
-        container.toggleClass("open");
-    });
-
+    
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
             lat: locations[6].location.lat,
@@ -51,8 +47,7 @@ function initMap() {
             lng: lng,
             title: title,
             animation: google.maps.Animation.DROP,
-            icon: defaultIcon,
-            yid: id
+            icon: defaultIcon
         });
         // Create an onclick event to open the large infowindow at each marker.
         marker.addListener('click', function() {
@@ -77,23 +72,19 @@ function initMap() {
         marker.addListener('mouseout', function() {
             this.setIcon(defaultIcon);
         });
-
         // Push the marker to our array of markers.
         markers.push(marker);
         bounds.extend(markers[i].position);
     }
+    //toggle menu icon
+    menuIcon.on('click', function() {
+        container.toggleClass('open');
+    });
 }
 
-function toggleBounce(marker) {
-    if (marker.getAnimation() !== null) {
-        marker.setAnimation(null);
-    } else {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
-}
 
 function handleError() {
-    console.log('Couldn\'t load Google Maps API');
+    $('#map').text('Sorry, couldn\'t load Google API');
 }
 
 function populateInfoWindow(marker, infowindow) {
@@ -173,8 +164,7 @@ function populateInfoWindow(marker, infowindow) {
             }).fail(function(jqxhr, textStatus, error) { //error handling
                 infowindowContent = '<div class="streetView"><h3>' + marker.title + '</h3>' +
                     '<div> Sorry, no information available</div></div>';
-                var err = textStatus + "," + error;
-                console.log("Request Failed: " + err);
+                infowindow.setContent(infowindowContent);
             });
         };
         //getPenoramaByLocation
@@ -182,11 +172,6 @@ function populateInfoWindow(marker, infowindow) {
         // Open the infowindow on the correct marker.
         infowindow.open(map, marker);
     }
-
-    //toggle menu icon
-    menuIcon.on('click', function() {
-        container.toggleClass('open');
-    });
 
     window.onresize = function() {
         map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object

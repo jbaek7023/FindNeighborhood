@@ -3,50 +3,43 @@ var locations = [{
     location: {
         lat: 33.783621,
         lng: -84.404552
-    },
-    id: 'antico-pizza-atlanta'
+    }
 }, {
     title: 'Vortex Bar & Grill',
     location: {
         lat: 33.776527,
         lng: -84.388646
-    },
-    id: 'the-vortex-bar-and-grill-midtown-atlanta'
+    }
 }, {
     title: 'Chick-fil-A',
     location: {
         lat: 33.7738306,
         lng: -84.3999051
-    },
-    id: 'chick-fil-a-atlanta-64?osq=Chick-fil+a'
+    }
 }, {
     title: 'West Egg Cafe',
     location: {
         lat: 33.7729774,
         lng: -84.405898
-    },
-    id: 'west-egg-café-atlanta-2'
+    }
 }, {
     title: 'Pizza Hut',
     location: {
         lat: 33.7815867,
         lng: -84.4047339
-    },
-    id: 'pizza-hut-atlanta-88?osq=pizza+hut'
+    }
 }, {
     title: 'Papa John\'s Pizza',
     location: {
         lat: 33.7804760,
         lng: -84.4051981
-    },
-    id: 'papa-johns-pizza-atlanta-15'
+    }
 }, {
     title: 'Waffle House',
     location: {
         lat: 33.7755879,
         lng: -84.389796
-    },
-    id: 'waffle-house-atlanta-82?osq=Waffle+house'
+    }
 }];
 
 //This is Location constructor
