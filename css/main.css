@@ -1,12 +1,29 @@
 html,
 body {
-    font-family: Arial, sans-serif;
+    /*src: 'font/My Epic Selfie Demo.ttf';*/
+    font-family: my_epic_selfie_demoregular, Arial, sans-serif;
     height: 100%;
     margin: 0px;
     padding: 0px;
     color: black;
     width: 100%;
 }
+
+@font-face {
+    /*Internal Fonts */
+    font-family: 'montserratregular';
+    src: url('montserrat-regular-webfont.woff2') format('woff2'),
+         url('montserrat-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+    font-family: 'my_epic_selfie_demoregular';
+    src: url('my_epic_selfie_demo-webfont.woff2') format('woff2'),
+         url('my_epic_selfie_demo-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 a {
     text-decoration: none;
 }
@@ -16,6 +33,17 @@ a:visited {
 h1 {
     padding-left: 30px;
 }
+
+h3 {
+    font-size : 18px;
+    line-height: 0;
+}
+
+.streetView {
+    font-family: my_epic_selfie_demoregular, Arial, sans-serif;
+}
+
+
 input {
     border: none;
     border-radius: 4px;
@@ -112,9 +140,7 @@ input {
     position: relative;
     left: 250px;
 }
-.streetView {
-    color: black;
-}
+
 #pano {
     width: 200px;
     height: 200px;

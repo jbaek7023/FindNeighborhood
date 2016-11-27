@@ -7,16 +7,17 @@ var menuIcon = $('#menu-icon');
 var optionsBox = $('.options-box');
 var navBar = $('#nav');
 
+var client_id = 'JCUSOXOIXJDLKNNQWOKGSQZSBCVZEK1J1RMHGUEF1WQ0KW5U';
+var client_secret = 'WMQHRCD22RR0TFRWOY10CRHD4JCQRU3D4MZPQJ1WN4PRU3JS';
 var container = $('.container');
-
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: locations[3].location.lat,
-            lng: locations[3].location.lng
+            lat: locations[6].location.lat,
+            lng: locations[6].location.lng
         },
-        zoom: 16,
+        zoom: 15,
         mapTypeControl: false
     });
 
@@ -82,6 +83,10 @@ function initMap() {
     });
 }
 
+function handleError() {
+    console.log('Couldn\'t load Google Maps API');
+}
+
 function populateInfoWindow(marker, infowindow) {
     bounds.extend(marker.position);
     if (infowindow.marker != marker) {
@@ -101,22 +106,42 @@ function populateInfoWindow(marker, infowindow) {
         //determine radius
         var radius = 50;
 
-        /*we are trying to put panorama(street view) to the info inwindow!*/
-        function getStreetView(data, status) {
-            var streetAddress = '';
-            var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + marker.lat + ',' + marker.lng + '&sensor=true';
+        var streetAddress="";
+        var cityAddress="";
+        var phoneNumber="";
 
-            //getting JSON data fomr url
-            $.getJSON(url, function(jsonData) {
-                if (jsonData.results.length > 0) {
-                    streetAddress = jsonData.results[0].formatted_address;
+        //put panorama(street view) to the info inwindow!
+        function getStreetView(data, status) {
+            var self = data;
+            var foursquareURL = 'https://api.foursquare.com/v2/venues/search?ll='+ marker.lat + ',' + marker.lng + '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=20160118' + '&query=' + marker.title;
+            //getting JSON data from four square (Third Party API)
+            $.getJSON(foursquareURL, function(data) {
+                var results = data.response.venues[0];
+                
+                streetAddress = results.location.formattedAddress[0];
+                cityAddress = results.location.formattedAddress[1];
+                phoneNumber = results.contact.formattedPhone;
+                if(typeof phoneNumber === 'undefined') {
+                    phoneNumber = "";
+                } else if(typeof streetAddress === 'undefined') {
+                    streetAddress = "";
+                } else if(typeof cityAddress === 'undefined'){
+                    cityAddress ="";
                 }
+
+                var infowindowContent="";
                 /*Adding Panorama*/
                 if (status == google.maps.StreetViewStatus.OK) {
-                    var nearStreetViewLocation = data.location.latLng;
+                    var nearStreetViewLocation = self.location.latLng;
                     var heading = google.maps.geometry.spherical.computeHeading(
                         nearStreetViewLocation, marker.position);
-                    infowindow.setContent('<h3 class="streetView">' + marker.title + '</h3><div class="streetView">' + streetAddress + '</div><div id="pano"></div>');
+
+                    //define info window content
+                    infowindowContent= '<div class="streetView"><h3>' + marker.title + '</h3>'
+                    +'<div>'+streetAddress+'</div><div>'+cityAddress+'</div><div>'+phoneNumber+'</div></div>'+'<div id="pano"></div>';
+
+                    //set info window content
+                    infowindow.setContent(infowindowContent);
                     /*panoramaOptions take nearStreetViewLocation and heading*/
                     var panoramaOptions = {
                         position: nearStreetViewLocation,
@@ -131,10 +156,16 @@ function populateInfoWindow(marker, infowindow) {
 
                 } else {
                     //If status is not OK (ERR Handling)
-                    infowindow.setContent('<h3 class="streetView">' + marker.title + '</h3><div class="streetView">' + streetAddress + '</div><div class="streetView">' + 'No Street View Found' + '</div>');
+                    infowindowContent= '<div class="streetView"><h3>' + marker.title + '</h3>'
+                    +'<div>'+streetAddress+'</div><div>'+cityAddress+'</div><div>'+phoneNumber+'</div>'+'<div> No Street View Found</div></div>';
+
+                    infowindow.setContent(infowindowContent);
                 }
-            }).fail(function(){
-                infowindow.setContent('<h3 class="streetView">Sorry, we couldn\'t find your address</h3>');
+            }).fail(function(jqxhr, textStatus, error ){ //error handling
+                infowindowContent= '<div class="streetView"><h3>' + marker.title + '</h3>'
+                    +'<div> Sorry, no information available</div></div>';
+                    var err = textStatus + "," + error;
+                    console.log("Request Failed: "+err);
             });
         }
         //getPenoramaByLocation
