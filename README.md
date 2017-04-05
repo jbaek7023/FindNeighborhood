@@ -1,13 +1,17 @@
-#Neighborhood App
+# Neighborhood App
 
 find the location of my neighborhood.  
 
-##Getting Started
+## How to run
 
 1. Download the whole file
-2. open index.html
+2. open index.html 
 
-###Development
+	or 
+
+jbaek7023.github.io/FindNeighborhood
+
+### Development
 
 Used Google Maps API
 Used knockout.js, jQuery Framework.
