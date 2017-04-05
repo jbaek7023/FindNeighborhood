@@ -8,7 +8,7 @@ location, prompts the user to choose Coffee, Pizza or Tacos, then lists location
 * Utilized Google Maps Javascript API, Google Places API and Foursquare API (information for location)
 
 ## Feature Demo
-![full](projvideo/cart.gif)
+![full](movie.gif)
 
 ## How to run
 
