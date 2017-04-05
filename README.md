@@ -7,6 +7,8 @@ location, prompts the user to choose Coffee, Pizza or Tacos, then lists location
 
 * Utilized Google Maps Javascript API, Google Places API and Foursquare API (information for location)
 
+
+
 ## Feature Demo
 ![full](movie.gif)
 
@@ -17,4 +19,4 @@ location, prompts the user to choose Coffee, Pizza or Tacos, then lists location
 
 	or 
 
-1. go to [project link](jbaek7023.github.io/FindNeighborhood)
+1. go to [project link](https://jbaek7023.github.io/FindNeighborhood/)
