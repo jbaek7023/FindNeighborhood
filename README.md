@@ -1,17 +1,14 @@
 # Neighborhood App
 
-find the location of my neighborhood.  
+* Find the location of your neighborhood! 
 
-Filter h, house
-close 
-filter none
+* Used Knockout.js (MVVM), Bootstrap Framework, and jQuery to create a program that takes the browser’s
+location, prompts the user to choose Coffee, Pizza or Tacos, then lists locations on a map. 
 
-toggle 
-page small scale ()
+* Utilized Google Maps Javascript API, Google Places API and Foursquare API (information for location)
 
-Animation toggle 
-
-
+## Feature Demo
+![full](projvideo/cart.gif)
 
 ## How to run
 
@@ -20,9 +17,4 @@ Animation toggle
 
 	or 
 
-jbaek7023.github.io/FindNeighborhood
-
-### Development
-
-Used Google Maps API
-Used knockout.js, jQuery Framework.
+1. go to [project link](jbaek7023.github.io/FindNeighborhood)
