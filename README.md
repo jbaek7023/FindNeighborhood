@@ -2,6 +2,17 @@
 
 find the location of my neighborhood.  
 
+Filter h, house
+close 
+filter none
+
+toggle 
+page small scale ()
+
+Animation toggle 
+
+
+
 ## How to run
 
 1. Download the whole file
